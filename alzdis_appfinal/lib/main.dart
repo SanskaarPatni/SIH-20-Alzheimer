@@ -17,11 +17,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider<GameManager>(
+      home:
+          /*ChangeNotifierProvider<GameManager>(
         create: (_) => GameManager(),
-        child: SimonSays(),
-        //WelcomePage(),
-      ),
+        child: SimonSays(),*/
+          WelcomePage(),
     );
   }
 }

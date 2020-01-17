@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import './quiz/quiz_main.dart';
 import 'package:http/http.dart' as http;
-import 'package:firebase_auth/firebase_auth.dart';
 
 class MyHomePage extends StatefulWidget {
   static final String route = "homepage";
@@ -11,13 +10,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  Future<FirebaseUser> signinAnon() async {
-    FirebaseUser user = await firebaseAuth.signInAnonymously();
-
-    print("Signed in ${user.uid}");
-    return user;
-  }
   var _isLoading = false;
   final nameController = TextEditingController();
   final ageController = TextEditingController();
@@ -52,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

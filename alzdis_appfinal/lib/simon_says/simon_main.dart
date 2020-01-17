@@ -3,13 +3,25 @@ import 'package:flutter/material.dart';
 import './GameManager.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+/*void main() {
   runApp(MaterialApp(
       title: 'Simon Says',
       home: ChangeNotifierProvider<GameManager>(
         create: (_) => GameManager(),
         child: SimonSays(),
       )));
+}*/
+class SimonSays1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'SimonSays',
+      home: ChangeNotifierProvider<GameManager>(
+        create: (_) => GameManager(),
+        child: SimonSays(),
+      ),
+    );
+  }
 }
 
 class SimonSays extends StatelessWidget {
@@ -22,22 +34,19 @@ class SimonSays extends StatelessWidget {
       centerTitle: true,
     );
 
-    Text points = Text(
-      'Points: ${gm.points}',
+    Text points = Text('Points: ${gm.points}', textAlign: TextAlign.center);
+    Text highScore = Text(
+      'HighScore: ${gm.highScore}',
       textAlign: TextAlign.center,
-      style: TextStyle(fontFamily: 'RaleWay', fontSize: 30),
     );
-
     Text timer = Text(
       'Time Left: ${gm.timer}',
-      style: TextStyle(fontFamily: 'RaleWay', fontSize: 30),
       textAlign: TextAlign.center,
     );
 
     Text instruction = Text(
       gm.instruction,
       textAlign: TextAlign.center,
-      style: TextStyle(fontFamily: 'RaleWay', fontSize: 30),
     );
 
     RaisedButton startBtn = RaisedButton(
@@ -51,13 +60,6 @@ class SimonSays extends StatelessWidget {
         gm.processInput('red', 'swipe');
       },
       child: Container(
-        child: Center(
-          child: Text(
-            '1',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
         color: Colors.red,
         width: 100,
         height: 100,
@@ -70,13 +72,6 @@ class SimonSays extends StatelessWidget {
         gm.processInput('blue', 'swipe');
       },
       child: Container(
-        child: Center(
-          child: Text(
-            '2',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
         color: Colors.blue,
         width: 100,
         height: 100,
@@ -89,13 +84,6 @@ class SimonSays extends StatelessWidget {
         gm.processInput('green', 'swipe');
       },
       child: Container(
-        child: Center(
-          child: Text(
-            '3',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
         color: Colors.green,
         width: 100,
         height: 100,
@@ -108,13 +96,6 @@ class SimonSays extends StatelessWidget {
         gm.processInput('yellow', 'swipe');
       },
       child: Container(
-        child: Center(
-          child: Text(
-            '4',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
         color: Colors.yellow,
         width: 100,
         height: 100,
@@ -124,7 +105,7 @@ class SimonSays extends StatelessWidget {
     Container topRow = Container(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-          children: [points, timer],
+          children: [points, highScore, timer],
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         ));
 

@@ -1,8 +1,9 @@
+import 'package:alzdis_appfinal/colourmatch.dart';
 import 'package:alzdis_appfinal/simon_says/simon_main.dart';
 import 'package:flutter/material.dart';
 import './quiz.dart';
 import 'dart:async';
-//import '../memoryGame/patterGame.dart';
+import '../memoryGame/patterGame.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -25,76 +26,107 @@ class _MyAppState extends State<MyApp> {
   var _totalScore = 0;
   final _questions = const [
     {
-      'questionText': 'Which year is it?',
+      'questionText': 'What day is it today?',
       'answers': [
-        {'text': '2020', 'score': 10},
-        {'text': '2022', 'score': 0},
-        {'text': '2011', 'score': 0},
-        {'text': '2019', 'score': 3},
-        {'text': '2012', 'score': 0},
-        {'text': '2021', 'score': 0},
+        {'text': 'Monday', 'score': 1},
+        {'text': 'Saturday', 'score': 2},
+        {'text': 'Tuesday', 'score': 1},
+        {'text': 'Thursday', 'score': 1},
+        {'text': 'Wednesday', 'score': 1},
+        {'text': 'Sunday', 'score': 1},
+        {'text': 'Friday', 'score': 1},
+        {'text': 'I dont\'t Know', 'score': 0},
       ],
     },
     {
-      'questionText': 'what is the day today?',
+      'questionText': 'What date is it today?',
       'answers': [
-        {'text': 'Monday', 'score': 0},
-        {'text': 'Tuesday', 'score': 0},
-        {'text': 'Wednesday', 'score': 0},
-        {'text': 'Sunday', 'score': 0},
-        {'text': 'Saturday', 'score': 10},
-        {'text': 'Friday', 'score': 0},
-        {'text': 'Thursday', 'score': 1}
+        {'text': '18', 'score': 2},
+        {'text': '23', 'score': 1},
+        {'text': '01', 'score': 1},
+        {'text': '10', 'score': 1},
+        {'text': 'I dont\'t Know', 'score': 0},
       ],
     },
     {
-      'questionText': 'Which month is it?',
+      'questionText': 'What year is it?',
       'answers': [
-        {'text': 'January', 'score': 10},
-        {'text': 'February', 'score': 0},
-        {'text': 'December', 'score': 0},
-        {'text': 'November', 'score': 0},
-        {'text': 'October', 'score': 0},
-        {'text': 'April', 'score': 0},
+        {'text': '1980', 'score': 1},
+        {'text': '2017', 'score': 1},
+        {'text': '2020', 'score': 2},
+        {'text': 'None of these', 'score': 1},
+        {'text': 'I dont\'t Know', 'score': 0},
       ],
     },
     {
-      'questionText': 'Which is 4 multiplied by 7?',
+      'questionText': 'Remember the following three objects. ',
       'answers': [
-        {'text': '21', 'score': 10},
-        {'text': '27', 'score': 0},
-        {'text': '28', 'score': 0},
-        {'text': '25', 'score': 0},
-        {'text': '24', 'score': 0},
-        {'text': '29', 'score': 0},
+        {'text': 'Apple', 'score': 0},
+        {'text': 'Table', 'score': 0},
+        {'text': 'Penny', 'score': 0},
+        {'text': 'click any option for next', 'score': 0},
+        
       ],
     },
     {
-      'questionText': 'What is this? 🖊️',
+      'questionText': 'Reverse the following word : CRiCkeT',
       'answers': [
-        {'text': 'pencil', 'score': 5},
-        {'text': 'brush', 'score': 0},
-        {'text': 'toothpick', 'score': 0},
-        {'text': 'pen', 'score': 10},
+        {'text': 'TekCiRC', 'score': 7},
+        {'text': 'tekCiRC', 'score': 6},
+        {'text': 'tekCRiC', 'score': 5},
+        {'text': 'tekcirc', 'score': 4},
+        {'text': 'tekCIRC', 'score': 3},
+        {'text': 'TEKric', 'score': 2},
+        {'text': 'CRiCkeT', 'score': 1},
+        {'text': 'I dont\'t Know', 'score': 0},
       ],
     },
     {
-      'questionText': 'Reverse of Cricket',
+      'questionText': 'Time to test your memory.\nPick out the three words that you had memorised :',
       'answers': [
-        {'text': 'tekrcic', 'score': 5},
-        {'text': 'cricket', 'score': 0},
-        {'text': 'rickcet', 'score': 0},
-        {'text': 'tekcirc', 'score': 10}
+        {'text': 'april', 'score': 1},
+        {'text': 'app', 'score': 1},
+        {'text': 'tablet', 'score': 1},
+        {'text': 'apple', 'score': 2},
+        {'text': 'pencil', 'score': 1},
+        {'text': 'table', 'score': 2},
+        {'text': 'penny', 'score': 2},
+        {'text': 'pen', 'score': 1},
+        {'text': 'taboo', 'score': 1},
+        {'text': 'I dont\'t Know', 'score': 0},
+      ],
+    },
+    {
+      'questionText': 'Wristwatch :',
+      'answers': [
+        {'text': 'watch', 'score': 2},
+        {'text': 'clock', 'score': 1},
+        {'text': 'phone', 'score': 1},
+        {'text': 'timer', 'score': 1},        
+        {'text': 'I dont\'t Know', 'score': 0},
+      ],
+    },
+    {
+      'questionText': 'Pencil :',
+      'answers': [
+        {'text': 'pen', 'score': 1},
+        {'text': 'stick', 'score': 1},
+        {'text': 'pencil', 'score': 2},
+        {'text': 'brush', 'score': 1},        
+        {'text': 'I dont\'t Know', 'score': 0},
+      ],
+    },
+    {
+      'questionText': 'Which year did you pass 10th grade \nHINT: approx 15 years after your birth year:',
+      'answers': [
+        {'text': '1975', 'score': 2},
+        {'text': '2001', 'score': 1},
+        {'text': '2016', 'score': 1},        
+        {'text': 'I dont\'t Know', 'score': 0},
       ],
     },
   ];
-  void _resetQuiz() {
-    setState(() {
-      _questionIndex = 0;
-      _totalScore = 0;
-    });
-  }
-
+  
   Timer timer;
   int time = 0;
   startTimer() {
@@ -110,8 +142,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
-    print(now);
-    print(new DateFormat.yMMMd().format(new DateTime.now()));
 
     stopTimer();
     final url = 'https://hackalz.firebaseio.com/data/${widget.name}.json';
@@ -149,19 +179,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('$time'),
-          centerTitle: true,
-          backgroundColor: Colors.redAccent,
-        ),
+        appBar: _questionIndex < _questions.length
+            ? AppBar(
+                title: Text('$time'),
+                centerTitle: true,
+                backgroundColor: Colors.redAccent,
+              )
+            : AppBar(
+                title: Text('Match the colour!'),
+              ),
         body: _questionIndex < _questions.length
             ? Quiz(
                 answerQuestion: _answerQuestion,
                 questionIndex: _questionIndex,
                 questions: _questions,
               )
-            //Result(_totalScore, _resetQuiz))
-            : SimonSays(),
+            : ColourGame(widget.name),
       ),
     );
   }

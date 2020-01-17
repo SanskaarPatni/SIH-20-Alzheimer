@@ -220,31 +220,29 @@ class GameManager with ChangeNotifier {
 
   Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
-        return dir.path;
-      }
-    
-      Future<File> get localFile async {
-        final path = await localPath;
-        return File('$path/hs.txt');
-      }
-    
-      Future<int> readScore() async {
-        try{
-          final file = await localFile;
-          String scoreStr = await file.readAsString();
-          int scoreNum = int.parse(scoreStr);
-          print('scoreNum = $scoreNum');
-          return scoreNum;
-        }catch(e){
-          print(e.toString());
-        }
+    return dir.path;
+  }
+
+  Future<File> get localFile async {
+    final path = await localPath;
+    return File('$path/hs.txt');
+  }
+
+  Future<int> readScore() async {
+    try{
+      final file = await localFile;
+      String scoreStr = await file.readAsString();
+      int scoreNum = int.parse(scoreStr);
+      print('scoreNum = $scoreNum');
+      return scoreNum;
+    }catch(e){
+      print(e.toString());
     }
-    
-      Future<File> writeScore(int score) async {
-        final file = await localFile;
-        return file.writeAsString(score.toString());
-      }
-    
-      
+}
+
+  Future<File> writeScore(int score) async {
+    final file = await localFile;
+    return file.writeAsString(score.toString());
+  }
 
 }

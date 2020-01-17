@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:alzdis_appfinal/simon_says/simon_main.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ int level = 8;
 class Home extends StatefulWidget {
   final int size;
 
-  const Home({Key key, this.size = 8}) : super(key: key);
+  const Home({Key key, this.size = 12}) : super(key: key);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -58,7 +59,7 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
-                  "🧀",
+                  "Let's see your Speedd",
                   style: Theme.of(context).textTheme.display2,
                 ),
               ),
@@ -101,11 +102,11 @@ class _HomeState extends State<Home> {
                       },
                       direction: FlipDirection.HORIZONTAL,
                       flipOnTouch: cardFlips[index],
-                      back: Container(
+                      front: Container(
                         margin: EdgeInsets.all(4.0),
                         color: Colors.deepOrange.withOpacity(0.3),
                       ),
-                      front: Container(
+                      back: Container(
                         margin: EdgeInsets.all(4.0),
                         color: Colors.deepOrange,
                         child: Center(
@@ -142,12 +143,9 @@ class _HomeState extends State<Home> {
             onPressed: () {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => Home(
-                    size: level,
-                  ),
+                  builder: (context) => SimonSays1(),
                 ),
               );
-              level *= 2;
             },
             child: Text("NEXT"),
           ),
@@ -156,4 +154,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
