@@ -1,7 +1,12 @@
-import './aboutyou.dart';
+import 'package:alzdis_appfinal/aboutyou.dart';
 import 'package:flutter/material.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,13 +58,10 @@ class WelcomePage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
+                          Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
-                                return MyHomePage();
-                              },
-                            ),
-                          );
+                            return MyHomePage();
+                          }));
                         },
                       ),
                     ),

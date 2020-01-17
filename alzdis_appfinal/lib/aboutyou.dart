@@ -1,19 +1,58 @@
 import 'package:flutter/material.dart';
-import './timer.dart';
+import 'dart:convert';
+import './quiz/quiz_main.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MyHomePage extends StatefulWidget {
+  static final String route = "homepage";
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  Future<FirebaseUser> signinAnon() async {
+    FirebaseUser user = await firebaseAuth.signInAnonymously();
+
+    print("Signed in ${user.uid}");
+    return user;
+  }
+  var _isLoading = false;
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   String gender = "";
   String genes = "";
   String dropdownValue = "Tenth";
+  Future<void> _submitData() {
+    final url =
+        'https://hackalz.firebaseio.com/data/${nameController.text}.json';
+    return http
+        .post(
+      url,
+      body: json.encode(
+        {
+          'name': nameController.text,
+          'gender': gender,
+          'age': ageController.text,
+          'genetic': genes,
+          'education': dropdownValue,
+        },
+      ),
+    )
+        .then((response) {
+      _isLoading = false;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return MyApp(nameController.text);
+          },
+        ),
+      );
+    });
+  }
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -24,181 +63,182 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         backgroundColor: Colors.lightGreen,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Card(
-              margin: EdgeInsets.all(10),
-              elevation: 5,
-              child: Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      controller: nameController,
-                      style: TextStyle(fontFamily: 'RobotoCondensed'),
-                      decoration: InputDecoration(
-                        labelText: 'Name',
-                      ),
-                    ),
-                    TextField(
-                      controller: ageController,
-                      style: TextStyle(fontFamily: 'RobotoCondensed'),
-                      decoration: InputDecoration(
-                        labelText: 'Age',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 10,
-              margin: EdgeInsets.all(10),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          child: FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                gender = 'M';
-                              });
-                            },
-                            child: Text('Male'),
-                            color: Colors.red,
+                  Card(
+                    margin: EdgeInsets.all(10),
+                    elevation: 5,
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        children: <Widget>[
+                          TextField(
+                            controller: nameController,
+                            style: TextStyle(fontFamily: 'RobotoCondensed'),
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                            ),
                           ),
-                        ),
-                        Container(
-                          child: FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                gender = 'F';
-                              });
-                            },
+                          TextField(
+                            controller: ageController,
+                            style: TextStyle(fontFamily: 'RobotoCondensed'),
+                            decoration: InputDecoration(
+                              labelText: 'Age',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 10,
+                    margin: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
+                                child: FlatButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      gender = 'M';
+                                    });
+                                  },
+                                  child: Text('Male'),
+                                  color: Colors.red,
+                                ),
+                              ),
+                              Container(
+                                child: FlatButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      gender = 'F';
+                                    });
+                                  },
+                                  child: Text(
+                                    'Female',
+                                    style: TextStyle(
+                                      fontFamily: 'LatoRegular',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
+                          title: Container(
                             child: Text(
-                              'Female',
+                              'Gender',
                               style: TextStyle(
-                                fontFamily: 'LatoRegular',
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
                               ),
                             ),
-                            color: Colors.red,
                           ),
-                        )
-                      ],
-                    ),
-                    title: Container(
-                      child: Text(
-                        'Gender',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
                         ),
-                      ),
+                        SizedBox(height: 10),
+                        ListTile(
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
+                                child: FlatButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      genes = 'Y';
+                                    });
+                                  },
+                                  child: Text('Yes'),
+                                  color: Colors.red,
+                                ),
+                              ),
+                              Container(
+                                child: FlatButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      genes = 'N';
+                                    });
+                                  },
+                                  child: Text('No'),
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
+                          title: Container(
+                            child: Text(
+                              'Genetic Background',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                      ],
                     ),
                   ),
                   SizedBox(height: 10),
-                  ListTile(
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Container(
-                          child: FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                gender = 'Y';
-                              });
-                            },
-                            child: Text('Yes'),
-                            color: Colors.red,
-                          ),
-                        ),
-                        Container(
-                          child: FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                gender = 'N';
-                              });
-                            },
-                            child: Text('No'),
-                            color: Colors.red,
-                          ),
-                        )
-                      ],
+                  Text(
+                    'Education',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
+                  ),
+                  DropdownButton<String>(
+                    value: dropdownValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 20,
+                    style: TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
                     ),
-                    title: Container(
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items: <String>['Tenth', 'Bachelors', 'Masters', 'Phd']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: FlatButton(
                       child: Text(
-                        'Genetic Background',
+                        'Submit Data',
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                      textColor: Colors.purple,
+                      onPressed: () {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        _submitData();
+                      },
                     ),
                   ),
-                  SizedBox(height: 10),
                 ],
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              'Education',
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
-            ),
-            DropdownButton<String>(
-              value: dropdownValue,
-              icon: Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 20,
-              style: TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (String newValue) {
-                setState(() {
-                  dropdownValue = newValue;
-                });
-              },
-              items: <String>['Tenth', 'Bachelors', 'Masters', 'Phd']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
-              child: FlatButton(
-                child: Text(
-                  'Submit Data',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                textColor: Colors.purple,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return Timerr();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
