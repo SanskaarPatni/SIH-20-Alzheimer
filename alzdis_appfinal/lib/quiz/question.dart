@@ -8,6 +8,7 @@ class Question extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5,
       margin: EdgeInsets.all(20),
       child: Container(
         alignment: Alignment.center,
@@ -18,7 +19,7 @@ class Question extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      color: Colors.orangeAccent,
+      color: Colors.white.withOpacity(1.0),
     );
   }
 }

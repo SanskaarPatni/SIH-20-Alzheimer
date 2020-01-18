@@ -57,7 +57,7 @@ class _ColourGameState extends State<ColourGame> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return Home();
+            return Home(widget.name, 12);
           },
         ),
       );
@@ -89,150 +89,152 @@ class _ColourGameState extends State<ColourGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              child: Text(
-                '$time',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontFamily: 'RaleWay',
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Red',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.yellow,
+      body: _isLoading
+          ? CircularProgressIndicator()
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      '$time',
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontFamily: 'RaleWay',
+                      ),
                     ),
                   ),
-                  onPressed: normal,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Yellow',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Red',
+                          style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.yellow,
+                          ),
+                        ),
+                        onPressed: normal,
+                      ),
                     ),
                   ),
-                  onPressed: normal,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Blue',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Yellow',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: normal,
+                      ),
                     ),
                   ),
-                  onPressed: increment,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Gray',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Blue',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: increment,
+                      ),
                     ),
                   ),
-                  onPressed: normal,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Yellow',
-                    style: TextStyle(
-                      color: Colors.yellow,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Gray',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: normal,
+                      ),
                     ),
                   ),
-                  onPressed: increment,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Green',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Yellow',
+                          style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: increment,
+                      ),
                     ),
                   ),
-                  onPressed: increment,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Blue',
-                    style: TextStyle(
-                      color: Colors.pink,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Green',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: increment,
+                      ),
                     ),
                   ),
-                  onPressed: normal,
-                ),
-              ),
-            ),
-            Card(
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                child: FlatButton(
-                  child: Text(
-                    'Pink',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 30,
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Blue',
+                          style: TextStyle(
+                            color: Colors.pink,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: normal,
+                      ),
                     ),
                   ),
-                  onPressed: normal,
-                ),
+                  Card(
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          'Pink',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 30,
+                          ),
+                        ),
+                        onPressed: normal,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:alzdis_appfinal/aboutyou.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -7,6 +8,17 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  final spinkit = SpinKitThreeBounce(
+    size: 30,
+    duration: Duration(milliseconds: 2000),
+    itemBuilder: (BuildContext context, int index) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.green,
+        ),
+      );
+    },
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +44,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   SizedBox(
                     child: Text(
-                      'tAqL',
+                      'Taql',
                       style: TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
@@ -43,14 +55,15 @@ class _WelcomePageState extends State<WelcomePage> {
                   SizedBox(
                     height: 100,
                   ),
-                  Container(
-                    height: 75,
-                    width: 150,
-                    child: Card(
-                      elevation: 10,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Container(
+                      color: Colors.green,
+                      height: 75,
+                      width: 150,
                       child: FlatButton(
                         child: Text(
-                          'START!',
+                          'START',
                           style: TextStyle(
                             fontFamily: 'LatoRegular',
                             fontSize: 20,
@@ -69,7 +82,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   SizedBox(
                     height: 30,
                   ),
-                  CircularProgressIndicator(),
+                  spinkit,
                 ],
               ),
             ),

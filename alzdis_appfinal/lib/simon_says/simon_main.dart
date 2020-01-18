@@ -3,19 +3,12 @@ import 'package:flutter/material.dart';
 import './GameManager.dart';
 import 'package:provider/provider.dart';
 
-/*void main() {
-  runApp(MaterialApp(
-      title: 'Simon Says',
-      home: ChangeNotifierProvider<GameManager>(
-        create: (_) => GameManager(),
-        child: SimonSays(),
-      )));
-}*/
 class SimonSays1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SimonSays',
+      debugShowCheckedModeBanner: false,
       home: ChangeNotifierProvider<GameManager>(
         create: (_) => GameManager(),
         child: SimonSays(),

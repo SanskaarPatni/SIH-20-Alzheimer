@@ -7,12 +7,26 @@ class Answer extends StatelessWidget {
   Answer(this.select, this.answerText);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-        color: Colors.orange,
-        textColor: Colors.white,
-        child: Text(answerText),
-        onPressed: select,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(100),
+      child: Container(
+        margin: EdgeInsets.all(10),
+        width: 200,
+        height: 60,
+        child: FlatButton(
+          color: Colors.green,
+          textColor: Colors.white,
+          child: Text(
+            answerText,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'LatoRegular',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          onPressed: select,
+        ),
       ),
     );
   }

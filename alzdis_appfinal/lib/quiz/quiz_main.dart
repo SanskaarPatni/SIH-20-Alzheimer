@@ -1,12 +1,10 @@
 import 'package:alzdis_appfinal/colourmatch.dart';
-import 'package:alzdis_appfinal/simon_says/simon_main.dart';
+import 'package:alzdis_appfinal/quiz/question.dart';
 import 'package:flutter/material.dart';
 import './quiz.dart';
 import 'dart:async';
-import '../memoryGame/patterGame.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:intl/intl.dart';
 
 var now = new DateTime.now().toString();
 
@@ -23,7 +21,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
-  var _totalScore = 0;
   final _questions = const [
     {
       'questionText': 'What day is it today?',
@@ -35,7 +32,7 @@ class _MyAppState extends State<MyApp> {
         {'text': 'Wednesday', 'score': 1},
         {'text': 'Sunday', 'score': 1},
         {'text': 'Friday', 'score': 1},
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
@@ -45,7 +42,7 @@ class _MyAppState extends State<MyApp> {
         {'text': '23', 'score': 1},
         {'text': '01', 'score': 1},
         {'text': '10', 'score': 1},
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
@@ -54,8 +51,10 @@ class _MyAppState extends State<MyApp> {
         {'text': '1980', 'score': 1},
         {'text': '2017', 'score': 1},
         {'text': '2020', 'score': 2},
+        {'text': '2012', 'score': 1},
+        {'text': '2000', 'score': 1},
         {'text': 'None of these', 'score': 1},
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
@@ -65,7 +64,6 @@ class _MyAppState extends State<MyApp> {
         {'text': 'Table', 'score': 0},
         {'text': 'Penny', 'score': 0},
         {'text': 'click any option for next', 'score': 0},
-        
       ],
     },
     {
@@ -74,15 +72,15 @@ class _MyAppState extends State<MyApp> {
         {'text': 'TekCiRC', 'score': 7},
         {'text': 'tekCiRC', 'score': 6},
         {'text': 'tekCRiC', 'score': 5},
-        {'text': 'tekcirc', 'score': 4},
         {'text': 'tekCIRC', 'score': 3},
         {'text': 'TEKric', 'score': 2},
         {'text': 'CRiCkeT', 'score': 1},
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
-    {
-      'questionText': 'Time to test your memory.\nPick out the three words that you had memorised :',
+    /*{
+      'questionText':
+          'Time to test your memory.\nPick out the three words that you had memorised :',
       'answers': [
         {'text': 'april', 'score': 1},
         {'text': 'app', 'score': 1},
@@ -93,17 +91,17 @@ class _MyAppState extends State<MyApp> {
         {'text': 'penny', 'score': 2},
         {'text': 'pen', 'score': 1},
         {'text': 'taboo', 'score': 1},
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
-    },
+    },*/
     {
       'questionText': 'Wristwatch :',
       'answers': [
         {'text': 'watch', 'score': 2},
         {'text': 'clock', 'score': 1},
         {'text': 'phone', 'score': 1},
-        {'text': 'timer', 'score': 1},        
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'timer', 'score': 1},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
@@ -112,21 +110,22 @@ class _MyAppState extends State<MyApp> {
         {'text': 'pen', 'score': 1},
         {'text': 'stick', 'score': 1},
         {'text': 'pencil', 'score': 2},
-        {'text': 'brush', 'score': 1},        
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': 'brush', 'score': 1},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
-      'questionText': 'Which year did you pass 10th grade \nHINT: approx 15 years after your birth year:',
+      'questionText':
+          'Which year did you pass 10th grade \nHINT: approx 15 years after your birth year:',
       'answers': [
         {'text': '1975', 'score': 2},
         {'text': '2001', 'score': 1},
-        {'text': '2016', 'score': 1},        
-        {'text': 'I dont\'t Know', 'score': 0},
+        {'text': '2016', 'score': 1},
+        {'text': 'I don\'t Know', 'score': 0},
       ],
     },
   ];
-  
+
   Timer timer;
   int time = 0;
   startTimer() {
@@ -142,7 +141,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
-
     stopTimer();
     final url = 'https://hackalz.firebaseio.com/data/${widget.name}.json';
     http
@@ -156,7 +154,6 @@ class _MyAppState extends State<MyApp> {
       ),
     )
         .then((resonse) {
-      _totalScore += score;
       setState(() {
         time = 0;
         _questionIndex = _questionIndex + 1;
@@ -178,12 +175,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: _questionIndex < _questions.length
             ? AppBar(
-                title: Text('$time'),
+                title: Text('Quizz'),
                 centerTitle: true,
-                backgroundColor: Colors.redAccent,
+                backgroundColor: Colors.green,
               )
             : AppBar(
                 title: Text('Match the colour!'),
@@ -193,6 +191,7 @@ class _MyAppState extends State<MyApp> {
                 answerQuestion: _answerQuestion,
                 questionIndex: _questionIndex,
                 questions: _questions,
+                time: time,
               )
             : ColourGame(widget.name),
       ),

@@ -1,7 +1,3 @@
-import 'package:alzdis_appfinal/simon_says/GameManager.dart';
-import 'package:alzdis_appfinal/simon_says/simon_main.dart';
-import 'package:provider/provider.dart';
-
 import './welcome.dart';
 import 'package:flutter/material.dart';
 
@@ -15,13 +11,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Alzhiemer Detection',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home:
-          /*ChangeNotifierProvider<GameManager>(
-        create: (_) => GameManager(),
-        child: SimonSays(),*/
-          WelcomePage(),
+      home: WelcomePage(),
     );
   }
 }
