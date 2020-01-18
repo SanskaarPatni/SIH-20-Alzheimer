@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:alzdis_appfinal/dragdrop/drag_drop.dart';
 import 'package:alzdis_appfinal/simon_says/simon_main.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class _HomeState extends State<Home> {
       body: json.encode(
         {
           'time': time,
-          'score': (0.3 * time).round(),
+          'score': -(0.3 * time).round(),
         },
       ),
     )
@@ -92,7 +91,8 @@ class _HomeState extends State<Home> {
                     Padding(
                       padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "Let's see your Speedd",
+                        "Speed Memory Test",
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.display2,
                       ),
                     ),
@@ -145,11 +145,11 @@ class _HomeState extends State<Home> {
                             flipOnTouch: cardFlips[index],
                             front: Container(
                               margin: EdgeInsets.all(4.0),
-                              color: Colors.deepOrange.withOpacity(0.3),
+                              color: Colors.green.withOpacity(0.3),
                             ),
                             back: Container(
                               margin: EdgeInsets.all(4.0),
-                              color: Colors.deepOrange,
+                              color: Colors.green,
                               child: Center(
                                 child: Text(
                                   "${data[index]}",
@@ -160,37 +160,6 @@ class _HomeState extends State<Home> {
                           ),
                           itemCount: data.length,
                         ),
-                      ),
-                    ),
-                    Container(
-                      height: 40,
-                      width: double.infinity,
-                      child: FlatButton(
-                        onPressed: () {
-                          final url =
-                              'https://hackalz.firebaseio.com/data/${widget.name}.json';
-                          return http
-                              .post(
-                            url,
-                            body: json.encode(
-                              {
-                                'time': 100,
-                                'score': 30,
-                              },
-                            ),
-                          )
-                              .then((response) {
-                            _isLoading = false;
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return DragDrop();
-                                },
-                              ),
-                            );
-                          });
-                        },
-                        child: Text('Skip this Question'),
                       ),
                     ),
                   ],

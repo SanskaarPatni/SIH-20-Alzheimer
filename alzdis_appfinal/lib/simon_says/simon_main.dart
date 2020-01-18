@@ -23,27 +23,45 @@ class SimonSays extends StatelessWidget {
     final gm = Provider.of<GameManager>(context);
 
     AppBar appbar = AppBar(
-      title: Text("Simon Says"),
+      backgroundColor: Colors.green,
+      title: Text(
+        "Simon Says",
+        style: TextStyle(
+          fontSize: 30,
+          fontFamily: 'RaleWay',
+        ),
+      ),
       centerTitle: true,
     );
 
-    Text points = Text('Points: ${gm.points}', textAlign: TextAlign.center);
-    Text highScore = Text(
-      'HighScore: ${gm.highScore}',
+    Text points = Text(
+      'Points: ${gm.points}',
       textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 20),
     );
+
     Text timer = Text(
       'Time Left: ${gm.timer}',
+      style: TextStyle(fontSize: 20),
       textAlign: TextAlign.center,
     );
 
     Text instruction = Text(
       gm.instruction,
       textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 25,
+      ),
     );
 
     RaisedButton startBtn = RaisedButton(
-      child: Text(gm.startBtnText),
+      child: Text(
+        gm.startBtnText,
+        style: TextStyle(
+          fontFamily: 'OpenSans',
+          fontSize: 25,
+        ),
+      ),
       onPressed: () => gm.gameStart(),
     );
 
@@ -98,7 +116,7 @@ class SimonSays extends StatelessWidget {
     Container topRow = Container(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-          children: [points, highScore, timer],
+          children: [points, timer],
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         ));
 
@@ -119,7 +137,26 @@ class SimonSays extends StatelessWidget {
     Container mainCol = Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-            children: [topRow, instruction, startBtn, colorRow1, colorRow2]));
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              topRow,
+              SizedBox(
+                height: 20,
+              ),
+              instruction,
+              SizedBox(
+                height: 20,
+              ),
+              startBtn,
+              SizedBox(
+                height: 20,
+              ),
+              colorRow1,
+              SizedBox(
+                height: 20,
+              ),
+              colorRow2
+            ]));
 
     Scaffold scaffold = Scaffold(appBar: appbar, body: mainCol);
 

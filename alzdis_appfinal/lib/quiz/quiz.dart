@@ -25,6 +25,18 @@ class _QuizState extends State<Quiz> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 10,
+          ),
+          CircleAvatar(
+            backgroundColor: Colors.blue,
+            child: Container(
+              child: Text(
+                '${widget.time}',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
           Question(widget.questions[widget.questionIndex]['questionText']),
           //Spread operator last mein
           //Second last toList
@@ -35,7 +47,6 @@ class _QuizState extends State<Quiz> {
             return Answer(
                 () => widget.answerQuestion(answer['score']), answer['text']);
           }).toList(),
-          Container(child: Text('${widget.time}')),
         ],
       ),
     );

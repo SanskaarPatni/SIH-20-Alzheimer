@@ -1,12 +1,11 @@
 import 'package:alzdis_appfinal/colourmatch.dart';
-import 'package:alzdis_appfinal/quiz/question.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import './quiz.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-var now = new DateTime.now().toString();
 
 class MyApp extends StatefulWidget {
   String name = "";
@@ -20,18 +19,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool _isLoading = false;
   var _questionIndex = 0;
   final _questions = const [
     {
       'questionText': 'What day is it today?',
       'answers': [
-        {'text': 'Monday', 'score': 1},
-        {'text': 'Saturday', 'score': 2},
-        {'text': 'Tuesday', 'score': 1},
-        {'text': 'Thursday', 'score': 1},
-        {'text': 'Wednesday', 'score': 1},
-        {'text': 'Sunday', 'score': 1},
-        {'text': 'Friday', 'score': 1},
+        {'text': 'Monday', 'score': 4},
+        {'text': 'Saturday', 'score': 8},
+        {'text': 'Tuesday', 'score': 4},
+        {'text': 'Thursday', 'score': 4},
+        {'text': 'Wednesday', 'score': 4},
+        {'text': 'Sunday', 'score': 4},
+        {'text': 'Friday', 'score': 4},
         {'text': 'I don\'t Know', 'score': 0},
       ],
     },
@@ -48,12 +48,12 @@ class _MyAppState extends State<MyApp> {
     {
       'questionText': 'What year is it?',
       'answers': [
-        {'text': '1980', 'score': 1},
-        {'text': '2017', 'score': 1},
-        {'text': '2020', 'score': 2},
-        {'text': '2012', 'score': 1},
-        {'text': '2000', 'score': 1},
-        {'text': 'None of these', 'score': 1},
+        {'text': '1980', 'score': 4},
+        {'text': '2017', 'score': 4},
+        {'text': '2020', 'score': 8},
+        {'text': '2012', 'score': 4},
+        {'text': '2000', 'score': 4},
+        {'text': 'None of these', 'score': 4},
         {'text': 'I don\'t Know', 'score': 0},
       ],
     },
@@ -63,64 +63,61 @@ class _MyAppState extends State<MyApp> {
         {'text': 'Apple', 'score': 0},
         {'text': 'Table', 'score': 0},
         {'text': 'Penny', 'score': 0},
-        {'text': 'click any option for next', 'score': 0},
+        {'text': 'Click any option for next qs', 'score': 0},
       ],
     },
     {
       'questionText': 'Reverse the following word : CRiCkeT',
       'answers': [
-        {'text': 'TekCiRC', 'score': 7},
-        {'text': 'tekCiRC', 'score': 6},
-        {'text': 'tekCRiC', 'score': 5},
-        {'text': 'tekCIRC', 'score': 3},
-        {'text': 'TEKric', 'score': 2},
-        {'text': 'CRiCkeT', 'score': 1},
+        {'text': 'TekCiRC', 'score': 21},
+        {'text': 'tekCiRC', 'score': 18},
+        {'text': 'tekCRiC', 'score': 15},
+        {'text': 'tekCIRC', 'score': 9},
+        {'text': 'TEKric', 'score': 6},
+        {'text': 'CRiCkeT', 'score': 3},
         {'text': 'I don\'t Know', 'score': 0},
       ],
     },
-    /*{
+    {
       'questionText':
           'Time to test your memory.\nPick out the three words that you had memorised :',
       'answers': [
-        {'text': 'april', 'score': 1},
-        {'text': 'app', 'score': 1},
-        {'text': 'tablet', 'score': 1},
-        {'text': 'apple', 'score': 2},
-        {'text': 'pencil', 'score': 1},
-        {'text': 'table', 'score': 2},
-        {'text': 'penny', 'score': 2},
-        {'text': 'pen', 'score': 1},
-        {'text': 'taboo', 'score': 1},
-        {'text': 'I don\'t Know', 'score': 0},
+        {'text': 'april,apple,penny', 'score': 6},
+        {'text': 'april,tablet,pen', 'score': 0},
+        {'text': 'app,tablet,penny', 'score': 3},
+        {'text': 'apple,table,pencil', 'score': 6},
+        {'text': 'apple,table,penny', 'score': 9},
       ],
-    },*/
+    },
     {
-      'questionText': 'Wristwatch :',
+      'questionText': 'What is this:⌚',
       'answers': [
-        {'text': 'watch', 'score': 2},
-        {'text': 'clock', 'score': 1},
+        {'text': 'watch', 'score': 5},
+        {'text': 'clock', 'score': 3},
         {'text': 'phone', 'score': 1},
-        {'text': 'timer', 'score': 1},
+        {'text': 'timer', 'score': 3},
         {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
-      'questionText': 'Pencil :',
+      'questionText': 'What is this:🖊️',
       'answers': [
-        {'text': 'pen', 'score': 1},
+        {'text': 'pen', 'score': 5},
         {'text': 'stick', 'score': 1},
-        {'text': 'pencil', 'score': 2},
+        {'text': 'pencil', 'score': 3},
         {'text': 'brush', 'score': 1},
         {'text': 'I don\'t Know', 'score': 0},
       ],
     },
     {
       'questionText':
-          'Which year did you pass 10th grade \nHINT: approx 15 years after your birth year:',
+          'A man walks 1m north,then 1m west and 1m south where is he',
       'answers': [
-        {'text': '1975', 'score': 2},
-        {'text': '2001', 'score': 1},
-        {'text': '2016', 'score': 1},
+        {'text': 'west', 'score': 5},
+        {'text': 'east', 'score': 1},
+        {'text': 'south-west', 'score': 1},
+        {'text': 'south-east', 'score': 1},
+        {'text': 'north', 'score': 1},
         {'text': 'I don\'t Know', 'score': 0},
       ],
     },
@@ -141,6 +138,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
+    setState(() {
+      _isLoading = true;
+    });
+
     stopTimer();
     final url = 'https://hackalz.firebaseio.com/data/${widget.name}.json';
     http
@@ -154,6 +155,7 @@ class _MyAppState extends State<MyApp> {
       ),
     )
         .then((resonse) {
+      _isLoading = false;
       setState(() {
         time = 0;
         _questionIndex = _questionIndex + 1;
@@ -179,20 +181,44 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: _questionIndex < _questions.length
             ? AppBar(
-                title: Text('Quizz'),
+                title: Text(
+                  'Taql',
+                  style: TextStyle(
+                    fontFamily: 'RaleWay',
+                  ),
+                ),
                 centerTitle: true,
                 backgroundColor: Colors.green,
               )
             : AppBar(
-                title: Text('Match the colour!'),
+                backgroundColor: Colors.green,
+                centerTitle: true,
+                title: Text(
+                  'Match the colour',
+                  style: TextStyle(fontFamily: 'RaleWay', fontSize: 30),
+                ),
               ),
         body: _questionIndex < _questions.length
-            ? Quiz(
-                answerQuestion: _answerQuestion,
-                questionIndex: _questionIndex,
-                questions: _questions,
-                time: time,
-              )
+            ? _isLoading
+                ? Center(
+                    child: SpinKitThreeBounce(
+                      size: 30,
+                      duration: Duration(milliseconds: 2000),
+                      itemBuilder: (BuildContext context, int index) {
+                        return DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Quiz(
+                    answerQuestion: _answerQuestion,
+                    questionIndex: _questionIndex,
+                    questions: _questions,
+                    time: time,
+                  )
             : ColourGame(widget.name),
       ),
     );
