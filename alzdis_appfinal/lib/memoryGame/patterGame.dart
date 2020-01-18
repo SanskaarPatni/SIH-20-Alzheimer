@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:alzdis_appfinal/simon_says/simon_main.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 int level = 8;
@@ -83,7 +84,19 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isLoading
-          ? CircularProgressIndicator()
+          ? Center(
+              child: SpinKitThreeBounce(
+                size: 30,
+                duration: Duration(milliseconds: 2000),
+                itemBuilder: (BuildContext context, int index) {
+                  return DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                    ),
+                  );
+                },
+              ),
+            )
           : SafeArea(
               child: SingleChildScrollView(
                 child: Column(

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:alzdis_appfinal/dragdrop/drag_drop.dart';
 import 'package:flutter/material.dart';
 import './GameManager.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,12 @@ class SimonSays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gm = Provider.of<GameManager>(context);
+
+    if (gm.points == 3) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return DragDrop();
+      }));
+    }
 
     AppBar appbar = AppBar(
       backgroundColor: Colors.green,

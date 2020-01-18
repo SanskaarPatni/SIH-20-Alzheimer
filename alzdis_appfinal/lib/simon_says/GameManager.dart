@@ -4,21 +4,21 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/material.dart';
 
 class GameManager with ChangeNotifier {
   List<Command> _commands = [
     Command.random(),
     Command.random(),
     Command.random()
-  ]; //Growable List
+  ];
   int _points = 0;
-  int _highScore = 0;
+
   int _iterator = 0;
   String _instruction = 'Click "Start" to begin.';
   int _timer = 0;
-  bool _stopTimer = false; //Flag used to pause timer.
-  bool _canPlay =
-      false; //Flag used to determine if the player should be able to play at a given time.
+  bool _stopTimer = false;
+  bool _canPlay = false;
   String _startBtnText = 'Start';
   bool _restartInProgress = false;
 
@@ -43,13 +43,6 @@ class GameManager with ChangeNotifier {
     notifyListeners();
   }
 
-  int get highScore => _highScore;
-
-  set highScore(int value) {
-    _highScore = value;
-    notifyListeners();
-  }
-
   int get iterator => _iterator;
 
   set iterator(int value) {
@@ -67,7 +60,7 @@ class GameManager with ChangeNotifier {
   GameManager() {
     _points = 0;
     _iterator = 0;
-    _highScore = 0;
+
     for (int i = 0; i < 3; i++) {
       _commands.add(Command.random());
     }
@@ -81,7 +74,7 @@ class GameManager with ChangeNotifier {
       _canPlay = false;
       _stopTimer = true;
       updateTimer(30);
-      updateHighScore();
+
       _points = 0;
       _iterator = 0;
       _commands.clear();
@@ -92,7 +85,7 @@ class GameManager with ChangeNotifier {
         updateInstruction(
             _commands[i].toString() + ' [${i + 1}/${_commands.length}]');
         print(_instruction);
-        await Future.delayed(const Duration(seconds: 2), () {});
+        await Future.delayed(const Duration(seconds: 3), () {});
       }
       updateInstruction('Go! ${_iterator + 1}/${_commands.length}');
       _stopTimer = false;
@@ -109,9 +102,8 @@ class GameManager with ChangeNotifier {
   }
 
   void startTimer() async {
-    updateTimer(31);
+    updateTimer(60);
     while (!_stopTimer && _timer > 0) {
-      //print('Decrementing time...');
       updateTimer(_timer - 1);
       await Future.delayed(const Duration(seconds: 1), () {});
     }
@@ -124,7 +116,6 @@ class GameManager with ChangeNotifier {
     bool incorrect = false;
 
     if (_canPlay) {
-      // Check if the action was 'not'
       if (_commands[_iterator].act == action.not) {
         if ((_commands[_iterator].simonSays &&
                 !_commands[_iterator].toString().contains(color) ||
@@ -134,9 +125,7 @@ class GameManager with ChangeNotifier {
         } else {
           incorrect = true;
         }
-      }
-      // Check if action matches what the player did.
-      else if (actionMatches(inputType)) {
+      } else if (actionMatches(inputType)) {
         if (_commands[_iterator].simonSays &&
                 _commands[_iterator].toString().contains(color) ||
             (!_commands[_iterator].simonSays &&
@@ -167,8 +156,7 @@ class GameManager with ChangeNotifier {
   }
 
   gameOver() {
-    updateHighScore();
-    _stopTimer = true;
+    //_stopTimer = true;
     updateInstruction(
         'Game Over\n The instruction said:\n${_commands[_iterator].toString()}');
     _canPlay = false;
@@ -185,37 +173,7 @@ class GameManager with ChangeNotifier {
   }
 
   nextRound() async {
-    if (!_restartInProgress) {
-      _restartInProgress = true;
-      _canPlay = false;
-      _stopTimer = true;
-      updateTimer(30);
-      _iterator = 0;
-      _commands.add(Command.random());
-      for (int i = 0; i < _commands.length; i++) {
-        updateInstruction(
-            _commands[i].toString() + ' [${i + 1}/${_commands.length}]');
-        print(_instruction);
-        await Future.delayed(const Duration(seconds: 2), () {});
-      }
-      updateInstruction('Go! ${_iterator + 1}/${_commands.length}');
-      _stopTimer = false;
-      startTimer();
-      _canPlay = true;
-      _restartInProgress = false;
-    }
-  }
-
-  updateHighScore() async {
-    if (await readScore() == null) {
-      print('readScore() returned null');
-      writeScore(_points);
-      _highScore = _points;
-    } else if (_points > _highScore) {
-      _highScore = _points;
-      writeScore(_highScore);
-      print('Updated high score in file.');
-    }
+    if (!_restartInProgress) {}
   }
 
   Future<String> get localPath async {
